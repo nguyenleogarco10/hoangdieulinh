@@ -18,23 +18,23 @@
             fontFamily: {
               // Thêm font cho chữ ký
               'signature': ['"Dancing Script"', 'cursive']
+            },
+            // (MỚI) Thêm màu nhấn
+            colors: {
+              'accent': '#4B3621', // Nâu sẫm
             }
           }
         }
       }
     </script>
     
-    <!-- Animate.css CDN (Cho hiệu ứng animation) -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
+    <!-- (MỚI) AOS.js CSS (Thay thế Animate.css) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <!-- Lucide Icons CDN (Cho các icon) -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     
-    <!-- WOW.js CDN (Kích hoạt animation khi cuộn) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    <!-- (BỎ) WOW.js CDN -->
     
     <!-- Google Fonts (Inter & Dancing Script) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,6 +42,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     
     <style>
+        /* (MỚI) Thêm biến CSS cho màu nhấn */
+        :root {
+            --accent-color: #4B3621;
+        }
+
         /* 7. Đổi nền thành beige */
         body {
             font-family: 'Inter', sans-serif;
@@ -58,11 +63,14 @@
             background: #e9ecef;
         }
         ::-webkit-scrollbar-thumb {
-            background: #adb5bd;
+            /* (MỚI) Dùng màu nhấn */
+            background: var(--accent-color);
+            opacity: 0.7;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #6c757d;
+            background: var(--accent-color);
+            opacity: 1;
         }
 
         /* Tùy chỉnh cho timeline */
@@ -91,22 +99,22 @@
             top: 0.375rem;
             width: 18px;
             height: 18px;
-            background-color: #4a5568;
+            /* (MỚI) Dùng màu nhấn */
+            background-color: var(--accent-color);
             border: 3px solid #FAF9F6; /* Màu nền beige */
             border-radius: 50%;
             z-index: 10;
             transition: background-color 0.3s, border-color 0.3s;
         }
         
-        .wow {
-            visibility: hidden;
-        }
+        /* (BỎ) .wow */
 
         /* 1. UI: Avatar Glow */
         .avatar-glow {
              border-radius: 0.5rem; /* existing rounded-lg */
              box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05),
-                         0 0 30px 5px rgba(59,130,246,0.4);
+                         /* (MỚI) Đổi màu glow sang màu be đậm hơn */
+                         0 0 30px 5px rgba(210, 180, 140, 0.4);
              transition: box-shadow 0.3s;
         }
 
@@ -121,12 +129,13 @@
 
         /* 1. UI: Glowing Button */
         .btn-glow:hover {
-          box-shadow: 0 0 15px #60A5FA, inset 0 0 10px #60A5FA;
+          /* (MỚI) Đổi màu glow sang màu be đậm hơn */
+          box-shadow: 0 0 15px rgba(210, 180, 140, 0.7), inset 0 0 10px rgba(210, 180, 140, 0.5);
         }
 
-        /* 7. Đổi nền gradient */
+        /* (MỚI) Đổi nền gradient Hero */
         .light-gradient { 
-            background: linear-gradient(135deg, #F5EADD, #FAF9F6); 
+            background: linear-gradient(to right, #f8f3eb, #fff); 
         }
 
         /* 2. UX: Header Scrolled */
@@ -140,8 +149,43 @@
         
         /* 2. UX: Scrollspy Active Link */
         .scrollspy-active {
-            color: #3B82F6 !important; /* Blue-600 */
+            /* (MỚI) Dùng màu nhấn */
+            color: var(--accent-color) !important; 
             font-weight: 600 !important;
+        }
+
+        /* (MỚI) Style cho avatar ở header */
+        .header-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid #F5EADD; /* Màu be đậm */
+            object-fit: cover;
+            margin-right: 1rem; /* Khoảng cách với tên */
+        }
+        
+        /* (MỚI) Đổi màu các tiêu đề và icon dùng màu nhấn */
+        h1, h2, h3, h4, h5 {
+            color: var(--accent-color);
+        }
+        /* Đảm bảo link dự án giữ màu */
+        a h4 {
+            color: var(--accent-color);
+        }
+        /* Đổi màu icon */
+        .lucide {
+            color: var(--accent-color);
+            opacity: 0.8;
+        }
+        /* Icon trên nút nổi */
+        .floating-icon .lucide {
+             color: #fff;
+             opacity: 1;
+        }
+        /* Icon trên nút tải CV */
+        .btn-glow .lucide {
+             color: #fff;
+             opacity: 1;
         }
 
     </style>
@@ -149,26 +193,32 @@
 <body class="antialiased">
 
     <!-- 2. UX: Progress Bar -->
-    <div id="progress-bar" class="fixed top-0 left-0 z-[60] h-1.5 bg-blue-500 transition-all duration-100" style="width: 0%"></div>
+    <!-- (MỚI) Đổi màu progress bar sang màu nhấn -->
+    <div id="progress-bar" class="fixed top-0 left-0 z-[60] h-1.5 bg-accent transition-all duration-100" style="width: 0%"></div>
 
     <!-- 3. UX: Floating Contact Buttons -->
     <div class="fixed bottom-6 right-6 z-40 flex flex-col gap-3">
-         <!-- 4. Đổi nút Mail thành Zalo -->
-         <a href="https://zalo.me/0358473824" target="_blank" rel="noopener noreferrer" class="w-14 h-14 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform" aria-label="Nhắn Zalo" title="Nhắn Zalo">
+         <!-- (MỚI) Đổi màu nút nổi sang màu nhấn -->
+         <a href="https://zalo.me/0358473824" target="_blank" rel="noopener noreferrer" class="floating-icon w-14 h-14 bg-accent text-white rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform" aria-label="Nhắn Zalo" title="Nhắn Zalo">
             <i data-lucide="message-circle" class="w-7 h-7"></i>
         </a>
-        <!-- 3. Đổi nút Phone thành Zalo -->
-        <a href="https://zalo.me/0358473824" target="_blank" rel="noopener noreferrer" class="w-14 h-14 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform" aria-label="Nhắn Zalo (SĐT)" title="Nhắn Zalo (SĐT)">
+        <a href="https://zalo.me/0358473824" target="_blank" rel="noopener noreferrer" class="floating-icon w-14 h-14 bg-accent text-white rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform" aria-label="Nhắn Zalo (SĐT)" title="Nhắn Zalo (SĐT)">
             <i data-lucide="phone" class="w-7 h-7"></i>
         </a>
-        <!-- Bỏ nút Zalo giả lập -->
     </div>
 
     <!-- Thanh Điều Hướng (Header) -->
     <header class="sticky top-0 z-50 w-full backdrop-blur-lg transition-all duration-300">
         <div class="container mx-auto px-6 py-4">
             <div class="flex flex-col md:flex-row items-center justify-between">
-                <h1 class="text-2xl font-bold text-gray-800">Hoàng Diệu Linh</h1>
+                <!-- (MỚI) Thêm Avatar và Tên -->
+                <div class="flex items-center">
+                    <!-- (MỚI) Ảnh đại diện header -->
+                    <img src="icon.png" alt="Hoàng Diệu Linh" class="header-avatar hidden md:block" 
+                         onerror="this.src='https://placehold.co/48x48/F5EADD/4B3621?text=HDL'">
+                    <h1 class="text-2xl font-bold">Hoàng Diệu Linh</h1>
+                </div>
+                
                 <nav class="mt-4 md:mt-0 flex items-center space-x-4 md:space-x-6">
                     <a href="#gioi-thieu" class="nav-link text-gray-600 hover:text-gray-900 transition duration-300">Giới thiệu</a>
                     <a href="#ky-nang" class="nav-link text-gray-600 hover:text-gray-900 transition duration-300">Kỹ năng</a>
@@ -176,8 +226,9 @@
                     <a href="#du-an" class="nav-link text-gray-600 hover:text-gray-900 transition duration-300">Dự án</a>
                     <a href="#hoc-van" class="nav-link text-gray-600 hover:text-gray-900 transition duration-300">Học vấn</a>
                     <a href="#hoat-dong" class="nav-link text-gray-600 hover:text-gray-900 transition duration-300">Hoạt động</a>
+                    <!-- Thêm link nav cho Thư viện ảnh -->
+                    <a href="#thu-vien-anh" class="nav-link text-gray-600 hover:text-gray-900 transition duration-300">Thư viện</a>
                     <a href="#lien-he" class="nav-link text-gray-600 hover:text-gray-900 transition duration-300">Liên hệ</a>
-                    <!-- 1. Bỏ nút Dark Mode Toggle -->
                 </nav>
             </div>
         </div>
@@ -191,8 +242,8 @@
             <div class="container mx-auto px-6">
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
                     <!-- Ảnh đại diện -->
-                    <div class="md:col-span-2 wow animate__animated animate__fadeInLeft">
-                        <!-- 2. Thay ảnh đại diện -->
+                    <!-- (MỚI) Thay WOW bằng AOS -->
+                    <div class="md:col-span-2" data-aos="fade-right">
                         <img src="Logo.png" 
                              alt="Hoàng Diệu Linh"
                              class="rounded-lg shadow-2xl w-full h-auto object-cover avatar-glow"
@@ -200,9 +251,10 @@
                     </div>
                     
                     <!-- Thông tin giới thiệu -->
-                    <div class="md:col-span-3 wow animate__animated animate__fadeInRight" data-wow-delay="0.2s">
+                    <!-- (MỚI) Thay WOW bằng AOS -->
+                    <div class="md:col-span-3" data-aos="fade-left" data-aos-delay="200">
                         <span class="text-lg font-semibold text-gray-600">Chào bạn, tôi là</span>
-                        <h2 class="text-5xl md:text-6xl font-extrabold text-gray-900 mt-2 mb-6">Hoàng Diệu Linh</h2>
+                        <h2 class="text-5xl md:text-6xl font-extrabold mt-2 mb-6">Hoàng Diệu Linh</h2>
                         <p class="text-xl md:text-2xl text-gray-700 mb-8">
                             Định hướng trở thành Trợ lý Giám đốc,
                             với thế mạnh về giao tiếp, điều phối dự án và tư duy phân tích.
@@ -211,12 +263,12 @@
                         <!-- Thông tin liên hệ nhanh -->
                         <div class="space-y-4 text-gray-700">
                             <a href="tel:0358473824" class="flex items-center group">
-                                <i data-lucide="phone" class="w-5 h-5 mr-3 text-gray-500 group-hover:text-gray-900 transition-colors"></i>
-                                <span class="group-hover:text-gray-900 transition-colors">0358 473 824</span>
+                                <i data-lucide="phone" class="w-5 h-5 mr-3 text-gray-500 group-hover:text-accent transition-colors"></i>
+                                <span class="group-hover:text-accent transition-colors">0358 473 824</span>
                             </a>
                             <a href="mailto:hoangdieulinh1007@gmail.com" class="flex items-center group">
-                                <i data-lucide="mail" class="w-5 h-5 mr-3 text-gray-500 group-hover:text-gray-900 transition-colors"></i>
-                                <span class="group-hover:text-gray-900 transition-colors">hoangdieulinh1007@gmail.com</span>
+                                <i data-lucide="mail" class="w-5 h-5 mr-3 text-gray-500 group-hover:text-accent transition-colors"></i>
+                                <span class="group-hover:text-accent transition-colors">hoangdieulinh1007@gmail.com</span>
                             </a>
                             <div class="flex items-center">
                                 <i data-lucide="map-pin" class="w-5 h-5 mr-3 text-gray-500"></i>
@@ -228,8 +280,8 @@
                             </div>
                         </div>
 
-                        <!-- 2. Nút Tải CV - Cập nhật link -->
-                        <a href="https://drive.google.com/file/d/1kj-nxWcc-EG2Kn-hE4HkCbEAWz5BZH1y/view?usp=sharing" target="_blank" rel="noopener noreferrer" download="HOANG-DIEU-LINH-CV.pdf" class="inline-flex items-center gap-2 bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700 transition-all duration-300 mt-10 btn-glow">
+                        <!-- 2. Nút Tải CV - (MỚI) Đổi màu nút -->
+                        <a href="https://drive.google.com/file/d/1kj-nxWcc-EG2Kn-hE4HkCbEAWz5BZH1y/view?usp=sharing" target="_blank" rel="noopener noreferrer" download="HOANG-DIEU-LINH-CV.pdf" class="inline-flex items-center gap-2 bg-accent text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-opacity-90 transition-all duration-300 mt-10 btn-glow">
                             <i data-lucide="download" class="w-5 h-5"></i>
                             Tải CV (PDF)
                         </a>
@@ -240,13 +292,14 @@
 
         <!-- Mục tiêu nghề nghiệp -->
         <section id="muc-tieu" class="bg-white">
-            <div class="container mx-auto px-6 py-20 md:py-24 wow animate__animated animate__fadeInUp">
+            <!-- (MỚI) Thay WOW bằng AOS -->
+            <div class="container mx-auto px-6 py-20 md:py-24" data-aos="fade-up">
                 <h3 class="text-3xl font-bold text-center mb-12">Mục tiêu nghề nghiệp</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Mục tiêu ngắn hạn -->
                     <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
                         <h4 class="text-xl font-semibold mb-3 flex items-center">
-                            <i data-lucide="target" class="w-6 h-6 mr-2 text-gray-700"></i>
+                            <i data-lucide="target" class="w-6 h-6 mr-2"></i>
                             Mục tiêu Ngắn hạn
                         </h4>
                         <p class="text-gray-700">
@@ -256,7 +309,7 @@
                     <!-- Mục tiêu dài hạn -->
                     <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">
                         <h4 class="text-xl font-semibold mb-3 flex items-center">
-                            <i data-lucide="trending-up" class="w-6 h-6 mr-2 text-gray-700"></i>
+                            <i data-lucide="trending-up" class="w-6 h-6 mr-2"></i>
                             Mục tiêu Dài hạn & Phát triển
                         </h4>
                         <ul class="list-disc list-inside text-gray-700 space-y-2">
@@ -272,30 +325,32 @@
 
         <!-- Kỹ năng -->
         <section id="ky-nang" class="container mx-auto px-6 py-20 md:py-24">
-            <h3 class="text-3xl font-bold text-center mb-12 wow animate__animated animate__fadeInUp">Kỹ năng</h3>
+            <!-- (MỚI) Thay WOW bằng AOS -->
+            <h3 class="text-3xl font-bold text-center mb-12" data-aos="fade-up">Kỹ năng</h3>
             
             <!-- Kỹ năng chuyên môn -->
-            <div class="mb-12 wow animate__animated animate__fadeInUp" data-wow-delay="0.1s">
+            <!-- (MỚI) Thay WOW bằng AOS -->
+            <div class="mb-12" data-aos="fade-up" data-aos-delay="100">
                 <h4 class="text-2xl font-semibold text-center mb-8">Kỹ năng chuyên môn</h4>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Áp dụng .glass-card -->
                     <div class="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1 glass-card">
-                        <i data-lucide="clipboard-list" class="w-10 h-10 mb-4 text-gray-700"></i>
+                        <i data-lucide="clipboard-list" class="w-10 h-10 mb-4"></i>
                         <h5 class="text-lg font-bold mb-2">Quản trị & Điều phối Dự án</h5>
                         <p class="text-gray-600 text-sm">Lập kế hoạch, phân công, kiểm soát tiến độ và xử lý rủi ro.</p>
                     </div>
                     <div class="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1 glass-card">
-                        <i data-lucide="bar-chart-3" class="w-10 h-10 mb-4 text-gray-700"></i>
+                        <i data-lucide="bar-chart-3" class="w-10 h-10 mb-4"></i>
                         <h5 class="text-lg font-bold mb-2">Phân tích & Báo cáo</h5>
                         <p class="text-gray-600 text-sm">Tư duy phân tích, đánh giá rủi ro, tổng hợp báo cáo chuyên nghiệp.</p>
                     </div>
                     <div class="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1 glass-card">
-                        <i data-lucide="user-check" class="w-10 h-10 mb-4 text-gray-700"></i>
+                        <i data-lucide="user-check" class="w-10 h-10 mb-4"></i>
                         <h5 class="text-lg font-bold mb-2">Tuyển dụng & Đào tạo</h5>
                         <p class="text-gray-600 text-sm">Am hiểu DISC, IKIGAI. Kỹ năng phỏng vấn, đào tạo thực tập sinh.</p>
                     </div>
                     <div class="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1 glass-card">
-                        <i data-lucide="users" class="w-10 h-10 mb-4 text-gray-700"></i>
+                        <i data-lucide="users" class="w-10 h-10 mb-4"></i>
                         <h5 class="text-lg font-bold mb-2">Giao tiếp & Tổ chức</h5>
                         <p class="text-gray-600 text-sm">MC, trình bày, đàm phán, thuyết trình, quan hệ đối tác.</p>
                     </div>
@@ -303,12 +358,13 @@
             </div>
             
             <!-- Kỹ năng khác -->
-            <div class="wow animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+            <!-- (MỚI) Thay WOW bằng AOS -->
+            <div data-aos="fade-up" data-aos-delay="200">
                 <h4 class="text-2xl font-semibold text-center mb-8">Kỹ năng khác</h4>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Áp dụng .glass-card -->
                     <div class="p-6 rounded-lg shadow-lg glass-card">
-                        <i data-lucide="video" class="w-10 h-10 mb-4 text-gray-700"></i>
+                        <i data-lucide="video" class="w-10 h-10 mb-4"></i>
                         <h5 class="text-lg font-bold mb-2">Truyền thông & Sáng tạo</h5>
                         <ul class="list-disc list-inside text-gray-600 text-sm space-y-1">
                             <li>Lên ý tưởng content Tik Tok (>20k view).</li>
@@ -318,7 +374,7 @@
                         </ul>
                     </div>
                     <div class="p-6 rounded-lg shadow-lg glass-card">
-                        <i data-lucide="languages" class="w-10 h-10 mb-4 text-gray-700"></i>
+                        <i data-lucide="languages" class="w-10 h-10 mb-4"></i>
                         <h5 class="text-lg font-bold mb-2">Ngoại ngữ</h5>
                         <ul class="list-disc list-inside text-gray-600 text-sm space-y-1">
                             <li><strong>Tiếng Anh:</strong> Giao tiếp chuyên ngành (Tương đương IELTS 6.5).</li>
@@ -326,7 +382,7 @@
                         </ul>
                     </div>
                      <div class="p-6 rounded-lg shadow-lg glass-card">
-                        <i data-lucide="presentation" class="w-10 h-10 mb-4 text-gray-700"></i>
+                        <i data-lucide="presentation" class="w-10 h-10 mb-4"></i>
                         <h5 class="text-lg font-bold mb-2">Truyền đạt</h5>
                         <ul class="list-disc list-inside text-gray-600 text-sm space-y-1">
                             <li>Tự tin thuyết trình, quản lý thời gian.</li>
@@ -340,14 +396,16 @@
         <!-- Kinh nghiệm làm việc -->
         <section id="kinh-nghiem" class="bg-white">
             <div class="container mx-auto px-6 py-20 md:py-24">
-                <h3 class="text-3xl font-bold text-center mb-16 wow animate__animated animate__fadeInUp">Kinh nghiệm làm việc</h3>
+                <!-- (MỚI) Thay WOW bằng AOS -->
+                <h3 class="text-3xl font-bold text-center mb-16" data-aos="fade-up">Kinh nghiệm làm việc</h3>
                 
                 <div class="max-w-3xl mx-auto">
                     <!-- Mục 1: Teky -->
-                    <div class="timeline-item wow animate__animated animate__fadeInUp">
+                    <!-- (MỚI) Thay WOW bằng AOS -->
+                    <div class="timeline-item" data-aos="fade-up">
                         <div class="timeline-dot"></div>
                         <span class="block text-sm font-medium text-gray-500 mb-1">06/2025 - 10/2025 (Theo CV)</span>
-                        <h4 class="text-xl font-bold text-gray-900">Telesale - Tư vấn tuyển sinh</h4>
+                        <h4 class="text-xl font-bold mb-1">Telesale - Tư vấn tuyển sinh</h4>
                         <p class="text-md font-semibold text-gray-700 mb-3">Học viện Công nghệ Teky</p>
                         <ul class="list-disc list-inside text-gray-600 space-y-2">
                             <li>Vượt thử việc trong 2 tháng, đạt doanh thu 60 triệu, vượt chỉ tiêu.</li>
@@ -358,10 +416,11 @@
                     </div>
 
                     <!-- Mục 2: Pearl Global -->
-                    <div class="timeline-item wow animate__animated animate__fadeInUp">
+                    <!-- (MỚI) Thay WOW bằng AOS -->
+                    <div class="timeline-item" data-aos="fade-up">
                         <div class="timeline-dot"></div>
                         <span class="block text-sm font-medium text-gray-500 mb-1">02/2024 - 08/2024 (Theo CV)</span>
-                        <h4 class="text-xl font-bold text-gray-900">Thực tập sinh Thu mua</h4>
+                        <h4 class="text-xl font-bold mb-1">Thực tập sinh Thu mua</h4>
                         <p class="text-md font-semibold text-gray-700 mb-3">Pearl Global Company</p>
                         <ul class="list-disc list-inside text-gray-600 space-y-2">
                             <li>Xử lý dữ liệu hệ thống (SAP PO): Tiếp nhận, xác thực và nhập dữ liệu đơn hàng.</li>
@@ -372,10 +431,11 @@
                     </div>
 
                     <!-- Mục 3: Freelancer -->
-                    <div class="timeline-item wow animate__animated animate__fadeInUp">
+                    <!-- (MỚI) Thay WOW bằng AOS -->
+                    <div class="timeline-item" data-aos="fade-up">
                         <div class="timeline-dot"></div>
                         <span class="block text-sm font-medium text-gray-500 mb-1">2022 - Hiện tại</span>
-                        <h4 class="text-xl font-bold text-gray-900">Gia sư Tiếng Anh</h4>
+                        <h4 class="text-xl font-bold mb-1">Gia sư Tiếng Anh</h4>
                         <p class="text-md font-semibold text-gray-700 mb-3">Freelancer</p>
                         <ul class="list-disc list-inside text-gray-600 space-y-2">
                             <li>Định hình là Mentor (Tận tâm, Tin cậy, Sáng tạo, Cởi mở).</li>
@@ -387,10 +447,11 @@
                     </div>
 
                     <!-- Mục 4: Uni English -->
-                    <div class="timeline-item wow animate__animated animate__fadeInUp">
+                    <!-- (MỚI) Thay WOW bằng AOS -->
+                    <div class="timeline-item" data-aos="fade-up">
                         <div class="timeline-dot"></div>
                         <span class="block text-sm font-medium text-gray-500 mb-1">09/2021 - 08/2022</span>
-                        <h4 class="text-xl font-bold text-gray-900">Nhân viên Kinh doanh - Lãnh đạo Đội nhóm</h4>
+                        <h4 class="text-xl font-bold mb-1">Nhân viên Kinh doanh - Lãnh đạo Đội nhóm</h4>
                         <p class="text-md font-semibold text-gray-700 mb-3">Uni English Center</p>
                         <ul class="list-disc list-inside text-gray-600 space-y-2">
                             <li>Tuyển dụng và đào tạo thực tập sinh, duy trì 10 nhân sự sau 2 tháng.</li>
@@ -406,28 +467,33 @@
 
         <!-- (Mục mới) Dự án Nổi bật -->
         <section id="du-an" class="container mx-auto px-6 py-20 md:py-24">
-            <h3 class="text-3xl font-bold text-center mb-16 wow animate__animated animate__fadeInUp">Dự án Nổi bật</h3>
+            <!-- (MỚI) Thay WOW bằng AOS -->
+            <h3 class="text-3xl font-bold text-center mb-16" data-aos="fade-up">Dự án Nổi bật</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Project 1 -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden wow animate__animated animate__fadeInUp transition-all duration-300 hover:shadow-2xl hover:-translate-y-2" data-wow-delay="0.1s">
+                <!-- (MỚI) Thay WOW bằng AOS -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
                     <img src="https://placehold.co/600x400/3B82F6/FFFFFF?text=Nến+Lịch+Sử+AR/VR" alt="Nến Lịch sử AR/VR" class="w-full h-56 object-cover">
                     <div class="p-6">
-                        <h4 class="text-xl font-bold text-gray-900 mb-2">Dự án: Nến lịch sử AR/VR</h4>
+                        <h4 class="text-xl font-bold mb-2">Dự án: Nến lịch sử AR/VR</h4>
                         <p class="text-gray-700 mb-4 text-sm">Dự án khởi nghiệp kết hợp công nghệ AR/VR để tối ưu hóa trải nghiệm khách hàng và tạo sự khác biệt.</p>
                         <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">AR/VR</span>
                         <span class="inline-block bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Start-up</span>
                     </div>
                 </div>
-                <!-- Project 2 -->
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden wow animate__animated animate__fadeInUp transition-all duration-300 hover:shadow-2xl hover:-translate-y-2" data-wow-delay="0.2s">
-                    <img src="https://placehold.co/600x400/EC4899/FFFFFF?text=Son+Môi+Thiên+Nhiên" alt="Son Môi Thiên Nhiên (Trải nghiệm ảo)" class="w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h4 class="text-xl font-bold text-gray-900 mb-2">Dự án: Son môi thiên nhiên (Trải nghiệm ảo)</h4>
-                        <p class="text-gray-700 mb-4 text-sm">Phát triển sản phẩm son môi thiên nhiên, kết hợp trải nghiệm son ảo để tăng tương tác và quyết định mua hàng.</p>
-                        <span class="inline-block bg-pink-100 text-pink-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Virtual Try-on</span>
-                        <span class="inline-block bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Start-up</span>
+                <!-- Project 2 - ĐÃ THÊM LINK -->
+                <!-- (MỚI) Thay WOW bằng AOS -->
+                <a href="https://nguyenleogarco10.github.io/sacmoc/" target="_blank" rel="noopener noreferrer" class="block rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bg-white h-full">
+                        <img src="https://placehold.co/600x400/EC4899/FFFFFF?text=Son+Môi+Thiên+Nhiên" alt="Son Môi Thiên Nhiên (Trải nghiệm ảo)" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold mb-2">Dự án: Son môi thiên nhiên (Trải nghiệm ảo)</h4>
+                            <p class="text-gray-700 mb-4 text-sm">Phát triển sản phẩm son môi thiên nhiên, kết hợp trải nghiệm son ảo để tăng tương tác và quyết định mua hàng.</p>
+                            <span class="inline-block bg-pink-100 text-pink-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Virtual Try-on</span>
+                            <span class="inline-block bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Start-up</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </section>
 
@@ -436,24 +502,26 @@
             <div class="container mx-auto px-6 py-20 md:py-24">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     <!-- Học vấn -->
-                    <div class="wow animate__animated animate__fadeInLeft">
+                    <!-- (MỚI) Thay WOW bằng AOS -->
+                    <div data-aos="fade-right">
                         <h3 class="text-3xl font-bold mb-8">Học vấn</h3>
                         <div class="bg-white p-8 rounded-lg shadow-lg h-full">
-                            <i data-lucide="graduation-cap" class="w-12 h-12 mb-4 text-gray-700"></i>
+                            <i data-lucide="graduation-cap" class="w-12 h-12 mb-4"></i>
                             <span class="block text-sm font-medium text-gray-500">Tốt nghiệp 2025</span>
-                            <h4 class="text-xl font-bold text-gray-900 mt-1">International Business</h4>
+                            <h4 class="text-xl font-bold mt-1">International Business</h4>
                             <p class="text-md font-semibold text-gray-700">Đại học FPT Hà Nội</p>
                         </div>
                     </div>
 
                     <!-- Giải thưởng & Chứng chỉ -->
-                    <div class="wow animate__animated animate__fadeInRight" data-wow-delay="0.2s">
+                    <!-- (MỚI) Thay WOW bằng AOS -->
+                    <div data-aos="fade-left" data-aos-delay="200">
                         <h3 class="text-3xl font-bold mb-8">Giải thưởng & Chứng chỉ</h3>
                         <div class="bg-white p-8 rounded-lg shadow-lg space-y-6">
                             <!-- Giải thưởng -->
                             <div>
                                 <h5 class="text-lg font-semibold mb-3 flex items-center">
-                                    <i data-lucide="award" class="w-5 h-5 mr-2 text-gray-700"></i>
+                                    <i data-lucide="award" class="w-5 h-5 mr-2"></i>
                                     Giải thưởng
                                 </h5>
                                 <ul class="list-disc list-inside text-gray-600 space-y-1">
@@ -464,22 +532,22 @@
                             <!-- Chứng chỉ -->
                             <div>
                                 <h5 class="text-lg font-semibold mb-3 flex items-center">
-                                    <i data-lucide="certificate" class="w-5 h-5 mr-2 text-gray-700"></i>
+                                    <i data-lucide="certificate" class="w-5 h-5 mr-2"></i>
                                     Chứng chỉ
                                 </h5>
                                 <ul class="list-disc list-inside text-gray-600 space-y-2">
                                     <li>
-                                        <a href="https://coursera.org/share/ff9ee70ebad7260d73fec518b2b984de" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 hover:underline">
+                                        <a href="https://coursera.org/share/ff9ee70ebad7260d73fec518b2b984de" target="_blank" rel="noopener noreferrer" class="hover:text-accent hover:underline">
                                             International Marketing & Cross Industry Growth (2021)
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://coursera.org/share/c0ed375925462711a24abf2819c4a5e4" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 hover:underline">
+                                        <a href="https://coursera.org/share/c0ed375925462711a24abf2819c4a5e4" target="_blank" rel="noopener noreferrer" class="hover:text-accent hover:underline">
                                             Information and Systems (2023)
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://coursera.org/share/7660e4c34b0811e38b237bb4eb4bdb05" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 hover:underline">
+                                        <a href="https://coursera.org/share/7660e4c34b0811e38b237bb4eb4bdb05" target="_blank" rel="noopener noreferrer" class="hover:text-accent hover:underline">
                                             Leading: Human Resource Management and Leadership (2024)
                                         </a>
                                     </li>
@@ -495,10 +563,12 @@
         <!-- Hoạt động nổi bật -->
         <section id="hoat-dong" class="container mx-auto px-6 py-20 md:py-24">
             <div class="">
-                <h3 class="text-3xl font-bold text-center mb-12 wow animate__animated animate__fadeInUp">Hoạt động nổi bật</h3>
+                <!-- (MỚI) Thay WOW bằng AOS -->
+                <h3 class="text-3xl font-bold text-center mb-12" data-aos="fade-up">Hoạt động nổi bật</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Tình nguyện -->
-                    <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200 wow animate__animated animate__fadeInUp" data-wow-delay="0.1s">
+                    <!-- (MỚI) Thay WOW bằng AOS -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200" data-aos="fade-up" data-aos-delay="100">
                         <h4 class="text-xl font-semibold mb-3">Tình nguyện (2019 - 2024)</h4>
                         <ul class="list-disc list-inside text-gray-700 space-y-2">
                             <li>Tham gia các chương trình thiện nguyện của Đoàn Thanh niên.</li>
@@ -508,7 +578,8 @@
                         </ul>
                     </div>
                     <!-- Leader FPT -->
-                    <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200 wow animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                    <!-- (MỚI) Thay WOW bằng AOS -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200" data-aos="fade-up" data-aos-delay="200">
                         <h4 class="text-xl font-semibold mb-3">Leader - Dự án Khởi nghiệp (ĐH FPT)</h4>
                         <ul class="list-disc list-inside text-gray-700 space-y-2">
                             <li>Thực hiện 2 dự án khởi nghiệp (đã nêu ở mục "Dự án").</li>
@@ -519,7 +590,8 @@
                         </ul>
                     </div>
                     <!-- MC & Sự kiện -->
-                    <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200 wow animate__animated animate__fadeInUp" data-wow-delay="0.3s">
+                    <!-- (MỚI) Thay WOW bằng AOS -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200" data-aos="fade-up" data-aos-delay="300">
                         <h4 class="text-xl font-semibold mb-3">Tổ chức Sự kiện & MC</h4>
                         <ul class="list-disc list-inside text-gray-700 space-y-2">
                             <li>Dẫn chương trình sự kiện lớn (Lễ 20/11, Lễ kỷ niệm 20 năm, khai trương, thời trang...).</li>
@@ -532,22 +604,46 @@
             </div>
         </section>
 
+        <!-- (Mục mới) Thư viện Hoạt động -->
+        <section id="thu-vien-anh" class="container mx-auto px-6 py-20 md:py-24">
+            <!-- (MỚI) Thay WOW bằng AOS -->
+            <h3 class="text-3xl font-bold text-center mb-12" data-aos="fade-up">Thư viện Hoạt động</h3>
+            
+            <!-- (MỚI) Thay WOW bằng AOS -->
+            <div class="relative" data-aos="fade-up" data-aos-delay="100">
+                <!-- Slider Container -->
+                <div id="activity-slider" class="flex overflow-x-hidden scroll-smooth snap-x snap-mandatory rounded-lg shadow-lg bg-white border border-gray-200" style="scroll-snap-type: x mandatory;">
+                    <!-- Các ảnh sẽ được chèn vào đây bằng JavaScript -->
+                </div>
+    
+                <!-- Nút Previous - (MỚI) Đổi màu -->
+                <button id="slider-prev" aria-label="Ảnh trước" class="absolute top-1/2 left-[-1.75rem] -translate-y-1/2 bg-white/80 hover:bg-white text-accent rounded-full p-2 shadow-md transition-all z-10 opacity-75 hover:opacity-100">
+                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                </button>
+                <!-- Nút Next - (MỚI) Đổi màu -->
+                <button id="slider-next" aria-label="Ảnh tiếp theo" class="absolute top-1/2 right-[-1.75rem] -translate-y-1/2 bg-white/80 hover:bg-white text-accent rounded-full p-2 shadow-md transition-all z-10 opacity-75 hover:opacity-100">
+                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </section>
+
         <!-- Liên hệ -->
         <section id="lien-he" class="bg-white">
             <div class="container mx-auto px-6 py-20 md:py-24">
-                <div class="max-w-3xl mx-auto text-center wow animate__animated animate__fadeInUp">
+                <!-- (MỚI) Thay WOW bằng AOS -->
+                <div class="max-w-3xl mx-auto text-center" data-aos="fade-up">
                     <h3 class="text-3xl font-bold text-center mb-6">Liên hệ</h3>
                     <p class="text-lg text-gray-700 mb-8">
                         Cảm ơn bạn đã ghé thăm. Tôi luôn sẵn sàng trao đổi về các cơ hội hợp tác và phát triển.
                     </p>
                     <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+                        <!-- (MỚI) Đổi màu nút -->
                         <a href="mailto:hoangdieulinh1007@gmail.com"
-                           class="inline-block bg-gray-800 text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-gray-900 transition-colors duration-300 btn-glow">
+                           class="inline-block bg-accent text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-opacity-90 transition-colors duration-300 btn-glow">
                             Gửi Email
                         </a>
-                        <!-- 1. Cập nhật nút Call sang Zalo -->
                         <a href="https://zalo.me/0358473824" target="_blank" rel="noopener noreferrer"
-                           class="inline-block bg-white text-gray-800 font-semibold py-3 px-8 rounded-lg shadow-lg border border-gray-300 hover:bg-gray-100 transition-colors duration-300">
+                           class="inline-block bg-white text-accent font-semibold py-3 px-8 rounded-lg shadow-lg border border-gray-300 hover:bg-gray-100 transition-colors duration-300">
                             Gọi 0358 473 824
                         </a>
                     </div>
@@ -567,7 +663,12 @@
         </div>
     </footer>
 
-    <!-- Script khởi chạy WOW.js, Lucide Icons và các tính năng UX mới -->
+    <!-- (MỚI) AOS.js Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- (MỚI) VanillaTilt.js Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+    
+    <!-- Script khởi chạy Lucide Icons và các tính năng UX mới -->
     <script>
         // 1. Bỏ Dark Mode Script
         
@@ -617,12 +718,232 @@
             });
         }
 
-        // --- Khởi tạo WOW.js & Lucide Icons ---
-        new WOW().init();
+        // --- (MỚI) Slider Hoạt động ---
+        const sliderContainer = document.getElementById('activity-slider');
+        const gallerySection = document.getElementById('thu-vien-anh'); // Lấy section thư viện
+        const prevBtn = document.getElementById('slider-prev');
+        const nextBtn = document.getElementById('slider-next');
+        let autoSlideInterval;
+        let isSliderActive = false; // (MỚI) Cờ kiểm tra slider đã kích hoạt
+        
+        // ===================================================================
+        // (MỚI) DANH SÁCH ẢNH VÀ MÔ TẢ CỦA BẠN
+        // Thêm ảnh và mô tả vào đây
+        const danhSachAnh = [
+            // --- BẮT ĐẦU DANH SÁCH ẢNH ---
+            
+            // VÍ DỤ: (Bạn hãy xóa/sửa các dòng ví dụ này)
+            { 
+                src: "1.png", 
+                desc: "TOP 4 Toàn Quốc: Start-up tài năng trẻ Fbiz Talent FPT (2023)." 
+            },
+            { 
+                src: "2.png", 
+                desc: "TOP 4 Toàn Quốc: Start-up tài năng trẻ Fbiz Talent FPT (2023)." 
+            },
+            { 
+                src: "3.png", 
+                desc: "TOP 4 Toàn Quốc: Start-up tài năng trẻ Fbiz Talent FPT (2023)." 
+            },
+            { 
+                src: "4.png", 
+                desc: "TOP 4 Toàn Quốc: Start-up tài năng trẻ Fbiz Talent FPT (2023)." 
+            },
+            { 
+                src: "5.png", 
+                desc: "Thiện nguyện 2024." 
+            },
+                        { 
+                src: "6.png", 
+                desc: "Thực tập tại Pearl Global." 
+            },
+                        { 
+                src: "7.png", 
+                desc: "Thực tập tại Pearl Global." 
+            },
+
+            // Thêm các ảnh khác của bạn ở đây, ví dụ:
+            // { 
+            //     src: "Anh/anh-hoat-dong-1.jpg", 
+            //     desc: "Kỷ niệm chuyến đi thiện nguyện." 
+            // },
+            // { 
+            //     src: "Anh/ky-niem.png", 
+            //     desc: "Lễ tốt nghiệp." 
+            // },
+            
+            // --- KẾT THÚC DANH SÁCH ẢNH ---
+        ];
+        // ===================================================================
+
+
+        // Chỉ chạy slider nếu danhSachAnh có nội dung và slider tồn tại
+        if (sliderContainer && danhSachAnh.length > 0) {
+            
+            // (MỚI) Tạo slide dựa trên danh sách ảnh
+            danhSachAnh.forEach((item, index) => {
+                const slide = document.createElement('div');
+                // Hiển thị 1 ảnh trên mobile, 2 trên tablet, 3 trên desktop
+                slide.className = 'flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 snap-center p-4';
+                
+                // (MỚI) Thêm data-tilt và data-aos vào slide
+                slide.innerHTML = `
+                    <div class="flex flex-col h-full rounded-lg overflow-hidden shadow-md" 
+                         data-tilt 
+                         data-aos="fade-up" 
+                         data-aos-delay="${(index % 3) * 100}">
+                        <img src="${item.src}" 
+                             alt="${item.desc || 'Hoạt động ' + (index + 1)}" 
+                             class="w-full h-64 object-cover bg-gray-100"
+                             onerror="this.src='https://placehold.co/400x300/E2E8F0/4A5568?text=Lỗi+Ảnh'">
+                        <p class="p-4 text-center text-gray-700 text-sm bg-gray-50 flex-grow">
+                            ${item.desc || '&nbsp;'} <!-- (MỚI) Hiển thị mô tả -->
+                        </p>
+                    </div>
+                `;
+                sliderContainer.appendChild(slide);
+            });
+
+            // (MỚI) Khởi tạo VanillaTilt cho các slide vừa tạo
+            VanillaTilt.init(document.querySelectorAll("#activity-slider [data-tilt]"), {
+                max: 15,
+                speed: 400,
+                glare: true,
+                "max-glare": 0.5
+            });
+
+            // Hàm tính chiều rộng 1 slide (chính xác hơn)
+            function getSlideWidth() {
+                // Lấy chính xác chiều rộng của 1 slide-item (bao gồm cả padding)
+                if (sliderContainer.children.length > 0) {
+                     return sliderContainer.children[0].offsetWidth;
+                }
+                // Fallback nếu chưa render
+                const slidesInView = window.innerWidth < 640 ? 1 : (window.innerWidth < 1024 ? 2 : 3);
+                return sliderContainer.clientWidth / slidesInView;
+            }
+
+            // Hàm trượt tới
+            function slideNext() {
+                if (!sliderContainer) return;
+                const slideWidth = getSlideWidth();
+                const maxScroll = sliderContainer.scrollWidth - sliderContainer.clientWidth;
+                
+                // Kiểm tra nếu gần cuối, thì quay về đầu (vòng lặp)
+                // Thêm 1 khoảng đệm nhỏ (e.g., 5px) để xử lý sai số
+                if (sliderContainer.scrollLeft >= maxScroll - 5) { 
+                    sliderContainer.scrollLeft = 0;
+                } else {
+                    sliderContainer.scrollLeft += slideWidth;
+                }
+            }
+
+            // Hàm trượt lùi - ĐÃ SỬA LỖI
+            function slidePrev() {
+                if (!sliderContainer) return;
+                const slideWidth = getSlideWidth();
+                const maxScroll = sliderContainer.scrollWidth - sliderContainer.clientWidth;
+
+                // Kiểm tra nếu ở đầu (hoặc rất gần đầu), thì đi đến cuối (vòng lặp)
+                // Sửa logic: dùng một ngưỡng nhỏ (ví dụ: 10px) thay vì so sánh với slideWidth
+                if (sliderContainer.scrollLeft < 10) { 
+                    sliderContainer.scrollLeft = maxScroll;
+                } else {
+                    sliderContainer.scrollLeft -= slideWidth;
+                }
+            }
+
+            // Gán sự kiện cho nút
+            nextBtn.addEventListener('click', () => {
+                slideNext();
+                isSliderActive = true; // (MỚI) Kích hoạt slider khi bấm
+                // Reset interval khi bấm nút
+                if (autoSlideInterval) clearInterval(autoSlideInterval);
+                autoSlideInterval = setInterval(slideNext, 4000); // (SỬA) Đổi thành 4 giây
+            });
+            prevBtn.addEventListener('click', () => {
+                slidePrev();
+                isSliderActive = true; // (MỚI) Kích hoạt slider khi bấm
+                // Reset interval khi bấm nút
+                if (autoSlideInterval) clearInterval(autoSlideInterval);
+                autoSlideInterval = setInterval(slideNext, 4000); // (SỬA) Đổi thành 4 giây
+            });
+
+            // Tự động trượt (Goal 3) - Sẽ được kích hoạt bởi IntersectionObserver
+            
+            // Hàm để bắt đầu auto-slide
+            function startAutoSlide() {
+                // Chỉ bắt đầu nếu chưa chạy
+                if (!autoSlideInterval) {
+                    autoSlideInterval = setInterval(slideNext, 4000); // (SỬA) Đổi thành 4 giây
+                }
+            }
+
+            // Dừng khi hover
+            sliderContainer.addEventListener('mouseenter', () => {
+                if (autoSlideInterval) clearInterval(autoSlideInterval);
+            });
+
+            // Tiếp tục khi rời chuột
+            sliderContainer.addEventListener('mouseleave', () => {
+                // (MỚI) Chỉ khởi động lại nếu slider đã được kích hoạt
+                if (isSliderActive) {
+                    autoSlideInterval = setInterval(slideNext, 4000); // (SỬA) Đổi thành 4 giây
+                }
+            });
+            
+            // (MỚI) IntersectionObserver để bắt đầu trượt khi cuộn tới
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Khi section 'thu-vien-anh' xuất hiện
+                        // Chờ 5 giây rồi mới bắt đầu trượt
+                        setTimeout(() => {
+                            isSliderActive = true; // (MỚI) Đặt cờ là đã kích hoạt
+                            startAutoSlide();
+                        }, 5000); // Chờ 5 giây
+                        
+                        // Dừng theo dõi sau khi đã kích hoạt 1 lần
+                        observer.unobserve(gallerySection);
+                    }
+                });
+            }, {
+                root: null, // quan sát so với viewport
+                threshold: 0.1 // Kích hoạt khi 10% section lọt vào view
+            });
+
+            // Bắt đầu theo dõi section 'thu-vien-anh'
+            if (gallerySection) {
+                observer.observe(gallerySection);
+            }
+            
+            // Xử lý khi resize (để giữ snap)
+            window.addEventListener('resize', () => {
+                 const slideWidth = getSlideWidth();
+                 const currentSlideIndex = Math.round(sliderContainer.scrollLeft / slideWidth);
+                 // Tắt scroll-smooth tạm thời để nhảy
+                 sliderContainer.classList.remove('scroll-smooth');
+                 sliderContainer.scrollLeft = currentSlideIndex * slideWidth;
+                 sliderContainer.classList.add('scroll-smooth');
+            });
+
+        } else if (sliderContainer) {
+            // (MỚI) Xử lý khi không có ảnh
+            sliderContainer.innerHTML = `<p class="text-center p-10 text-gray-500">Chưa có ảnh nào trong thư viện.</p>`;
+            // Ẩn các nút
+            if (prevBtn) prevBtn.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
+        }
+
+
+        // --- Khởi tạo (MỚI) AOS.js & Lucide Icons ---
+        AOS.init({
+            duration: 800, // Thời gian animation
+            once: true // Chỉ chạy 1 lần
+        });
         lucide.createIcons();
     </script>
 
 </body>
 </html>
-
 
